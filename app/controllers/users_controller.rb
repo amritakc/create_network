@@ -34,11 +34,13 @@ class UsersController < ApplicationController
 
 	def show
 		@user = User.find(session[:user_id])
-		@friends = User.find(session[:user_id]).friends
+		# @friends = User.find(session[:user_id]).friends
+		@friends_t = Friendship.where(user:User.find(session[:user_id]),invite:'t')
+		@friends_p = Friendship.where(friend:User.find(session[:user_id]),invite:'p')
 	end
 
 	def show_users
-		@users = User.where.not(id:session[:user_id])
+		@users = User.where.not(id:User.find(session[:user_id]).friends)
 	end
 
 	def profile
@@ -47,17 +49,22 @@ class UsersController < ApplicationController
 
 	def create_pending
 		Friendship.create(user:User.find(session[:user_id]),friend:User.find(params[:id]),invite:'p')
+		# Friendship.create(user:User.find(params[:id]), friend:User.find(session[:user_id]),invite:'p')
 		redirect_to '/users'
 	end
 
 	def create_friendship
+		# User.find(session[:user_id]).friendships.where(friend:User.find(params[:id])).first.destroy
+		User.find(params[:id]).friendships.where(friend:User.find(session[:user_id])).first.destroy
 		Friendship.create(user:User.find(session[:user_id]), friend: User.find(params[:id]), invite: 't')
-		User.find(session[:user_id]).friendships.where(friend:User.find(params[:id])).first.destroy
+		Friendship.create(user:User.find(params[:id]), friend: User.find(session[:user_id]), invite: 't')
 		redirect_to '/professional_profile'
 	end
 
 	def destroy_invite
-		User.find(session[:user_id]).friendships.where(friend:User.find(params[:id])).first.destroy
+		# User.find(session[:user_id]).friendships.where(friend:User.find(params[:id])).first.destroy
+		User.find(params[:id]).friendships.where(friend:User.find(session[:user_id])).first.destroy
+
 		redirect_to '/professional_profile'
 	end
 

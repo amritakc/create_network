@@ -9,6 +9,7 @@
   	</tr>
 
 <% @users.each do |x| %>
+<% if x.name != current_user.name %>
 	<tr>
 		<td><a href = '/users/<%= x.id %>'> <%= x.name %></a> </td>
 		<td>
@@ -18,5 +19,6 @@
 			</form>
 		</td>
 	</tr>
+<% end %>
 <% end %>
 </table> 

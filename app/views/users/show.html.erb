@@ -7,33 +7,35 @@
 <%= @user.description %>
 
 <h3>Your Professional Network</h3>
-<% @friends.each do |f| %>
-	<%= f.name %><br>
+<% @friends_t.each do |f| %>
+	<a href= '/users/<%=f.friend.id%>'><%= f.friend.name %></a><br>
 <% end %>
 <h3>Invitiations</h3>
 <p>The following people asked you to be their network:</p>
 
+<% if @friends_p %>
 <table>
 	<tr>		
 	    <th>Name</th>
 	    <th>Action</th>
   	</tr>
 
-<% @friends.each do |x| %>
+<% @friends_p.each do |x| %>
 	<tr>
-		<td><a href = '/users/<%= x.id %>'> <%= x.name %></a></td>
+		<td><a href = '/users/<%= x.user.id %>'> <%= x.user.name %></a></td>
 		<td>
-			<form action ='/accept/<%= x.id %>' method = 'post'>
+			<form action ='/accept/<%= x.user.id %>' method = 'post'>
 				<input name ="authenticity_token" value ="<%= form_authenticity_token%>" type="hidden">
 				<input type = 'submit' value = 'Accept Invitation'>
 			</form>
-			<form action = "/destroy/<%= x.id %>" method = 'post'>
+			<form action = "/destroy/<%= x.user.id %>" method = 'post'>
  				<input name= "authenticity_token" value = "<% form_authenticity_token %>" type = "hidden">
  				<input type = "submit" value = "Ignore">
  			</form>
  		</td>
 	</tr>
 <% end %>
-</table> 
 
+</table> 
+<% end %>
 
