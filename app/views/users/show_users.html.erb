@@ -1,0 +1,22 @@
+<a href = '/professional_profile'>My Profile</a>
+
+<h1>Users you may want to connect with:</h1>
+
+<table>
+	<tr>		
+	    <th>Name</th>
+	    <th>Action</th>
+  	</tr>
+
+<% @users.each do |x| %>
+	<tr>
+		<td><a href = '/users/<%= x.id %>'> <%= x.name %></a> </td>
+		<td>
+			<form action ='/pending/<%= x.id %>' method = 'post'>
+				<input name ="authenticity_token" value ="<%= form_authenticity_token%>" type="hidden">
+				<input type = 'submit' value = 'Connect'>
+			</form>
+		</td>
+	</tr>
+<% end %>
+</table> 

@@ -1,0 +1,39 @@
+<br>
+<a href ='/users'>Users</a>
+
+<h1>Hi <%= @user.name %></h1>
+
+<h3>Here is your profile description:</h3>
+<%= @user.description %>
+
+<h3>Your Professional Network</h3>
+<% @friends.each do |f| %>
+	<%= f.name %><br>
+<% end %>
+<h3>Invitiations</h3>
+<p>The following people asked you to be their network:</p>
+
+<table>
+	<tr>		
+	    <th>Name</th>
+	    <th>Action</th>
+  	</tr>
+
+<% @friends.each do |x| %>
+	<tr>
+		<td><a href = '/users/<%= x.id %>'> <%= x.name %></a></td>
+		<td>
+			<form action ='/accept/<%= x.id %>' method = 'post'>
+				<input name ="authenticity_token" value ="<%= form_authenticity_token%>" type="hidden">
+				<input type = 'submit' value = 'Accept Invitation'>
+			</form>
+			<form action = "/destroy/<%= x.id %>" method = 'post'>
+ 				<input name= "authenticity_token" value = "<% form_authenticity_token %>" type = "hidden">
+ 				<input type = "submit" value = "Ignore">
+ 			</form>
+ 		</td>
+	</tr>
+<% end %>
+</table> 
+
+
